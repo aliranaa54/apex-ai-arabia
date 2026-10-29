@@ -1,39 +1,38 @@
 # AI Use Disclosure
 
-## AI tool used
+## AI tools used
 
-**Claude Code** (Anthropic's AI coding assistant, running in the terminal, model Claude Sonnet 5.5).
-No other AI tool was used for this submission.
+Claude Code (Anthropic) was used as an AI coding assistant during implementation, testing, troubleshooting, and documentation.
 
-## How AI was used
+The model used was Claude Sonnet 5.5.
 
-- **Implementation:** Claude Code generated the first version of the Flask API, the Dockerfile, the Docker
-  Compose file, the release/rollback shell scripts and the GitHub Actions workflow.
-- **Testing:** it wrote the pytest tests (including the intentional failure) and ran them, the deployment demo,
-  the rollback and the Trivy scan, and saved the real output in `evidence/`.
-- **Troubleshooting:** while running the deployment it found two bugs and fixed them:
-  1. the API crashed because of `read_only: true` with no `/tmp` (fixed with a `tmpfs`);
-  2. the first deploy did not start the database (fixed in `scripts/release.sh`).
-- **Documentation:** it drafted the README, RUNBOOK, DECISIONS and this file.
+## How AI assistance was used
 
-## What I did myself
+- **Implementation:** Assisted with generating the initial Flask API, Dockerfile, Docker Compose configuration, release and rollback scripts, and GitHub Actions workflow.
+- **Testing and validation:** Assisted in writing pytest tests, including a separate intentional-failure demonstration, and running validation commands. The evidence directory contains command output collected during the actual verification process.
+- **Troubleshooting:** Assisted in identifying and resolving two deployment issues:
+  1. The API required a writable temporary directory when running with a read-only filesystem. This was addressed using a `tmpfs` mount.
+  2. The initial release procedure did not start the database service. The release script was updated to address this issue.
+- **Documentation:** Assisted in drafting the README, runbook, decision memo, and this disclosure.
 
-I reviewed the code and documents, set up the GitHub repository and pushed it, and I am responsible for
-everything submitted. The evidence logs are real command output from my machine. The GitHub Actions
-result is described in the README exactly as it happened (see "Evidence").
+## Candidate responsibilities
 
-I can explain the design, run the demo and discuss limitations and improvements in the review.
+I used AI-generated suggestions as part of the development process and remain responsible for the submitted work. I reviewed the implementation and documentation, configured the GitHub repository, and pushed the project.
+
+Test results, deployment outcomes, security scan results, and CI status are reported according to the evidence actually collected. Any limitations or unverified steps are documented rather than presented as successful.
+
+I will explain the architecture, technical decisions, security controls, testing strategy, rollback procedure, and known limitations during the assessment review.
 
 ## Technologies and tools
 
-| Area | What I used |
+| Area | Technology |
 |---|---|
-| Language / framework | Python 3.12, Flask, Gunicorn |
-| Database | PostgreSQL 16 (alpine), psycopg 3 |
-| Containers | Docker, Docker Compose (non-root user, read-only filesystem, dropped capabilities) |
-| CI/CD | GitHub Actions (test, build, scan, deploy-gate) |
-| Testing / lint | pytest, ruff |
-| Security scanning | Trivy (image vulnerability scan) |
-| Observability | JSON structured logs, `/healthz` and `/readyz`, Prometheus metrics, proposed alert rules |
-| Scripts | Bash (`release.sh`, `rollback.sh`, `wait_healthy.sh`, `test.sh`, `demo.sh`) |
-| Source control | Git, GitHub |
+| Language and framework | Python 3.12, Flask, Gunicorn |
+| Database | PostgreSQL 16, psycopg 3 |
+| Containers | Docker, Docker Compose |
+| CI/CD | GitHub Actions |
+| Testing and linting | pytest, Ruff |
+| Security scanning | Trivy |
+| Observability | Structured JSON logs, health/readiness endpoints, Prometheus metrics, proposed alert rules |
+| Automation | Bash release, rollback, health-check, test, and demo scripts |
+| Source control | Git and GitHub |
