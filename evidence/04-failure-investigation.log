@@ -1,0 +1,26 @@
+# Failure drill: database goes down
+$ docker compose stop db
+ Container apex-ai-arabia-db-1 Stopped 
+$ curl /healthz  (process is alive)
+{"status":"ok"}
+ [200]
+$ curl /readyz   (should fail)
+{"status":"not ready"}
+ [503]
+$ curl /operations
+[500]
+$ docker compose logs api --tail 4
+  File "/usr/local/lib/python3.12/site-packages/psycopg/_conninfo_attempts.py", line 50, in conninfo_attempts
+    raise e.OperationalError(str(last_exc))
+psycopg.OperationalError: [Errno -3] Temporary failure in name resolution
+{"time": "2026-10-29 08:57:14,120", "level": "INFO", "msg": "request", "method": "GET", "path": "/operations", "status": 500}
+$ metrics for 5xx
+http_requests_total{method="GET",path="/readyz",status="503"} 1.0
+http_requests_total{method="GET",path="/operations",status="500"} 1.0
+http_requests_created{method="GET",path="/readyz",status="503"} 1.7932642340821714e+09
+http_requests_created{method="GET",path="/operations",status="500"} 1.7932642341205063e+09
+
+# Fix: start db again
+$ curl /readyz
+{"status":"ready"}
+ [200]

@@ -1,0 +1,30 @@
+[notice] To update, run: pip install --upgrade pip
+All checks passed!
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-8.3.2, pluggy-1.7.0 -- /usr/local/bin/python3.12
+rootdir: /w
+collecting ... collected 8 items
+
+tests/test_api.py::test_healthz PASSED                                   [ 12%]
+tests/test_api.py::test_readyz_ok PASSED                                 [ 25%]
+tests/test_api.py::test_readyz_fails_when_db_down PASSED                 [ 37%]
+tests/test_api.py::test_create_and_list PASSED                           [ 50%]
+tests/test_api.py::test_rejects_missing_fields PASSED                    [ 62%]
+tests/test_api.py::test_metrics_exposed PASSED                           [ 75%]
+tests/test_api.py::test_version_endpoint PASSED                          [ 87%]
+tests/test_api.py::test_intentional_failure FAILED                       [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_intentional_failure ___________________________
+
+    @pytest.mark.skipif(os.getenv("INTENTIONAL_FAILURE") != "1", reason="only used to prove the CI gate")
+    def test_intentional_failure():
+>       assert False, "intentional failure: CI must block deployment"
+E       AssertionError: intentional failure: CI must block deployment
+E       assert False
+
+tests/test_api.py:53: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_api.py::test_intentional_failure - AssertionError: intentio...
+========================= 1 failed, 7 passed in 0.27s ==========================
+exit=1

@@ -1,0 +1,27 @@
+$ scripts/release.sh 1.0.0
+ Container apex-ai-arabia-api-1 Started 
+healthy: {"version":"1.0.0"}
+Release 1.0.0 is live.
+
+$ create a record
+{"id":1,"owner":"ali","title":"restart cache"}
+
+$ scripts/release.sh 1.1.0
+healthy: {"version":"1.1.0"}
+Release 1.1.0 is live.
+$ data survived the release:
+[{"id":1,"owner":"ali","title":"restart cache"}]
+
+$ scripts/rollback.sh
+healthy: {"version":"1.0.0"}
+Rollback to 1.0.0 done.
+$ docker compose ps
+api apex-ops-api:1.0.0 Up 2 seconds (health: starting)
+db postgres:16-alpine Up 12 seconds (healthy)
+
+$ user inside the container
+uid=10001(apex) gid=999(apex) groups=999(apex)
+
+$ down + up, is the data still there?
+healthy: {"version":"1.0.0"}
+[{"id":1,"owner":"ali","title":"restart cache"}]

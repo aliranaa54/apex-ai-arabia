@@ -1,0 +1,20 @@
+# Proposed Prometheus alert rules. Not deployed in this exercise (no Prometheus in the compose stack,
+# to keep it small), but the metrics they use are already exposed at /metrics.
+groups:
+  - name: apex-ops-api
+    rules:
+      - alert: ApiNotReady
+        expr: probe_success{job="apex-api-readyz"} == 0
+        for: 2m
+        labels: {severity: page}
+        annotations: {summary: "/readyz failing for 2m - probably the database. See RUNBOOK 'Database down'."}
+      - alert: HighErrorRate
+        expr: sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m])) > 0.05
+        for: 5m
+        labels: {severity: page}
+        annotations: {summary: "More than 5% of requests are failing."}
+      - alert: SlowRequests
+        expr: histogram_quantile(0.95, sum by (le) (rate(http_request_seconds_bucket[5m]))) > 1
+        for: 10m
+        labels: {severity: ticket}
+        annotations: {summary: "p95 latency above 1s for 10 minutes."}

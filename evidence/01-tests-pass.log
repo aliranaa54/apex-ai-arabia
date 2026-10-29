@@ -1,0 +1,18 @@
+[notice] To update, run: pip install --upgrade pip
+All checks passed!
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-8.3.2, pluggy-1.7.0 -- /usr/local/bin/python3.12
+rootdir: /w
+collecting ... collected 8 items
+
+tests/test_api.py::test_healthz PASSED                                   [ 12%]
+tests/test_api.py::test_readyz_ok PASSED                                 [ 25%]
+tests/test_api.py::test_readyz_fails_when_db_down PASSED                 [ 37%]
+tests/test_api.py::test_create_and_list PASSED                           [ 50%]
+tests/test_api.py::test_rejects_missing_fields PASSED                    [ 62%]
+tests/test_api.py::test_metrics_exposed PASSED                           [ 75%]
+tests/test_api.py::test_version_endpoint PASSED                          [ 87%]
+tests/test_api.py::test_intentional_failure SKIPPED (only used to pr...) [100%]
+
+========================= 7 passed, 1 skipped in 0.23s =========================
+exit=0
