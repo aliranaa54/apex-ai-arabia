@@ -1,0 +1,79 @@
+114:        if False:  # BROKEN ON PURPOSE (demo)
+Running version before: {"version":"1.0.0"}
+$ scripts/release.sh 2.0.0-bad
+Building apex-ops-api:2.0.0-bad
+ Image apex-ops-api:2.0.0-bad Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 556B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 573B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 88B done
+#4 DONE 0.0s
+
+#5 [1/6] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159
+#5 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 4.53kB done
+#6 DONE 0.0s
+
+#7 [2/6] WORKDIR /srv
+#7 CACHED
+
+#8 [3/6] COPY app/requirements.txt .
+#8 CACHED
+
+#9 [4/6] RUN pip install --no-cache-dir -r requirements.txt
+#9 CACHED
+
+#10 [5/6] COPY app/ .
+#10 DONE 0.0s
+
+#11 [6/6] RUN useradd --system --uid 10001 apex
+#11 0.225 useradd warning: apex's uid 10001 is greater than SYS_UID_MAX 999
+#11 DONE 0.3s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 0.2s done
+#12 exporting manifest sha256:33c0cdbb70ec3d15612253467cbdf6653114081174649fbd1b76103158384601 done
+#12 exporting config sha256:3f079d3e94221e66e7ab1d65c6676edfb3b120976de240b41f89c34fc0069eab done
+#12 exporting attestation manifest sha256:e94e05d2c809e43cf973b3bb5055e6df6e0b18978a548684e1271706feb3fc3f 0.0s done
+#12 exporting manifest list sha256:179296d39ea89f68df1710de10e8e49830a9c89127b03aab5e6b5ffd58763d68 done
+#12 naming to docker.io/library/apex-ops-api:2.0.0-bad done
+#12 unpacking to docker.io/library/apex-ops-api:2.0.0-bad 0.0s done
+#12 DONE 0.3s
+
+#13 resolving provenance for metadata file
+#13 DONE 0.0s
+ Image apex-ops-api:2.0.0-bad Built 
+Deploying 2.0.0-bad (was: 1.0.0)
+ Container apex-ai-arabia-db-1 Running 
+ Container apex-ai-arabia-db-1 Waiting 
+ Container apex-ai-arabia-db-1 Healthy 
+ Container apex-ai-arabia-api-1 Recreate 
+ Container apex-ai-arabia-api-1 Recreated 
+ Container apex-ai-arabia-api-1 Starting 
+ Container apex-ai-arabia-api-1 Started 
+not healthy after 60s
+Release 2.0.0-bad is unhealthy -> rolling back
+Rolling back to 1.0.0
+ Container apex-ai-arabia-api-1 Recreate 
+ Container apex-ai-arabia-api-1 Recreated 
+ Container apex-ai-arabia-api-1 Starting 
+ Container apex-ai-arabia-api-1 Started 
+healthy: {"version":"1.0.0"}
+Rollback to 1.0.0 done.
+exit code of release.sh: 1
+Running version after:  {"version":"1.0.0"}
+api apex-ops-api:1.0.0 Up 2 seconds (health: starting)
+db postgres:16-alpine Up 2 minutes (healthy)

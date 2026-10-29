@@ -1,5 +1,14 @@
 # Decisions and trade-offs
 
+## Assumptions
+- The reviewer has Docker and Docker Compose, and nothing else installed.
+- "Local environment" means one machine; no cloud resources are created or needed.
+- All data is synthetic (task titles and owner names typed by hand); no real customer data.
+- The database is a single Postgres container with a Docker volume; no replication or backups in this exercise.
+- Version numbers are chosen by the person releasing (`release.sh 1.1.0`); CI tags images with the commit SHA.
+- Rollback only needs to go back one version.
+
+
 **Stack.** Flask + Postgres because they are simple and I can explain every line. Tests use an in-memory
 store so they run in under a second with no database.
 

@@ -9,6 +9,8 @@ Flask + Postgres, packaged in Docker, run with Docker Compose, tested and built 
  you / server:  scripts/release.sh <version>  -->  docker compose  -->  [ api :8000 ] --> [ postgres + volume ]
 ```
 
+Full diagrams (runtime and commit-to-release flow): [`docs/architecture.md`](docs/architecture.md)
+
 ## Run it (needs Docker + Compose only)
 
 ```bash
@@ -55,6 +57,7 @@ and `deploy` needs `build`, so a red test means no image and no deploy.
 | `evidence/03-deploy-and-rollback.log` | deploy 1.0.0, release 1.1.0, rollback, non-root user, data survives restart |
 | `evidence/04-failure-investigation.log` | database stopped, how I found it, fix |
 | `evidence/05-trivy-scan.log` | image scan: 0 HIGH/CRITICAL |
+| `evidence/07-auto-rollback.log` | a deliberately broken 2.0.0-bad release fails its health check and `release.sh` rolls back to 1.0.0 by itself (`scripts/demo_bad_release.sh`) |
 | `evidence/06-fresh-clone.log` | fresh `git clone` + `./scripts/up.sh` works, all endpoints answer |
 
 **Not done:** I did not run the GitHub Actions workflow on GitHub (no repo pushed), so there is no CI run
