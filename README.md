@@ -12,12 +12,20 @@ Flask + Postgres, packaged in Docker, run with Docker Compose, tested and built 
 ## Run it (needs Docker + Compose only)
 
 ```bash
-cp .env.example .env            # then change POSTGRES_PASSWORD
-./scripts/test.sh               # lint + tests, inside a container
-./scripts/release.sh 1.0.0      # builds apex-ops-api:1.0.0, starts db + api, waits for /readyz
+git clone git@github.com:aliranaa54/apex-ai-arabia.git && cd apex-ai-arabia
+./scripts/up.sh                 # creates .env with a random DB password, then: docker compose up -d --build --wait
+```
+
+If you already have a `.env` (copy of `.env.example`), plain `docker compose up --build` works too.
+The API is on **http://localhost:8000**.
+
+```bash
+curl localhost:8000/readyz
 curl -XPOST localhost:8000/operations -H 'content-type: application/json' \
      -d '{"title":"restart cache","owner":"ali"}'
 curl localhost:8000/operations
+./scripts/test.sh               # lint + tests, inside a container
+docker compose down             # stop (data stays in the volume); add -v to wipe it
 ```
 
 Endpoints: `/healthz` (alive), `/readyz` (alive + database reachable), `/version`, `/metrics`, `/operations`.
@@ -47,6 +55,7 @@ and `deploy` needs `build`, so a red test means no image and no deploy.
 | `evidence/03-deploy-and-rollback.log` | deploy 1.0.0, release 1.1.0, rollback, non-root user, data survives restart |
 | `evidence/04-failure-investigation.log` | database stopped, how I found it, fix |
 | `evidence/05-trivy-scan.log` | image scan: 0 HIGH/CRITICAL |
+| `evidence/06-fresh-clone.log` | fresh `git clone` + `./scripts/up.sh` works, all endpoints answer |
 
 **Not done:** I did not run the GitHub Actions workflow on GitHub (no repo pushed), so there is no CI run
 screenshot. The workflow is written, but the same steps were run locally. I would not claim more than that.

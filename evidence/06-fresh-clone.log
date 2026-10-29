@@ -1,0 +1,15 @@
+# Fresh clone test: git clone, then ./scripts/up.sh (nothing pre-installed except Docker)
+$ curl /healthz
+{"status":"ok"}
+$ curl /readyz
+{"status":"ready"}
+$ curl /version
+{"version":"1.0.0"}
+$ POST /operations
+{"id":1,"owner":"ali","title":"fresh clone check"}
+
+$ GET /operations
+[{"id":1,"owner":"ali","title":"fresh clone check"}]
+$ docker compose ps
+api apex-ops-api:1.0.0 Up 28 seconds (healthy)
+db postgres:16-alpine Up 34 seconds (healthy)
